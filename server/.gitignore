@@ -104,6 +104,10 @@ dist
 .temp
 .cache
 
+# Prisma
+prisma/generated
+prisma/migrations
+
 # vitepress build output
 **/.vitepress/dist
 
