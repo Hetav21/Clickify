@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  output   = "../prisma/generated"
 }
 
 datasource db {
@@ -9,9 +9,9 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  userId   String @unique
-  email    String @unique
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  shortId  String? @unique
+  email    String  @unique
   password String
 
   Link Link[]
