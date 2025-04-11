@@ -1,9 +1,9 @@
 import express from "express";
-import { sign } from "jsonwebtoken";
 import { z } from "zod";
 import { signUpSchema } from "../../common/schema/signUpSchema";
 import { SIGN_UP as limit } from "../../config/rateLimits";
-import { hashPassword } from "../../helpers/hashPassword";
+import { generateJwtToken } from "../../helpers/handleJwt";
+import { hashPassword } from "../../helpers/handlePasswords";
 import { response } from "../../helpers/response";
 import { prisma } from "../../lib/dbConnect";
 import { generateShortId } from "../../lib/generateShortId";
@@ -112,21 +112,22 @@ router.post("/", async (req, res) => {
       },
     });
 
-    const token =
-      "Bearer " +
-      sign(
-        { id: user.id, email: user.email, shortId: user.shortId },
-        process.env.JWT_SECRET! || "0000",
-      );
+    // generate a jwt token
+    const token = generateJwtToken({
+      id: user.id,
+      email: user.email,
+      shortId,
+    });
 
     response(
       {
         success: true,
-        message: "User sign up successfully",
+        message: "User signed up successfully",
         data: {
           id: user.id,
           email: user.email,
           shortId: user.shortId,
+          token,
         },
       },
       200,
