@@ -1,13 +1,13 @@
 import express from "express";
-import { response } from "../../helpers/response";
-import { prisma } from "../../lib/dbConnect";
+import { sign } from "jsonwebtoken";
 import { z } from "zod";
 import { signUpSchema } from "../../common/schema/signUpSchema";
-import rateLimit from "../../lib/rateLimiter";
 import { SIGN_UP as limit } from "../../config/rateLimits";
-import { generateShortId } from "../../lib/generateShortId";
 import { hashPassword } from "../../helpers/hashPassword";
-import { sign } from "jsonwebtoken";
+import { response } from "../../helpers/response";
+import { prisma } from "../../lib/dbConnect";
+import { generateShortId } from "../../lib/generateShortId";
+import rateLimit from "../../lib/rateLimiter";
 
 const router = express.Router();
 

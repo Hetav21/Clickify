@@ -1,5 +1,5 @@
-import { emailRegex, passwordRegex } from "../regex";
 import { z } from "zod";
+import { emailRegex, passwordRegex } from "../regex";
 
 export const emailValidation = z
   .string()
