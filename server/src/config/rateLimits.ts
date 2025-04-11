@@ -2,3 +2,6 @@
 
 // Limit for /sign-up
 export const SIGN_UP = 5;
+
+// Limit for /sign-in
+export const SIGN_IN = 5;
