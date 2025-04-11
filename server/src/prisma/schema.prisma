@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String @unique
+  email    String @unique
+  password String
+
+  Link Link[]
+}
+
+model Link {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String    @unique @db.ObjectId
+  shortUrl   String    @unique
+  longUrl    String    @unique
+  totalClick Int       @default(0)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  expiresAt  DateTime?
+
+  user  User    @relation(fields: [userId], references: [id])
+  Click Click[]
+}
+
+model Click {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  linkId    String   @unique @db.ObjectId
+  ip        String
+  userAgent String
+  timestamp DateTime @default(now())
+
+  link Link @relation(fields: [linkId], references: [id])
+}
