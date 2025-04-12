@@ -6,7 +6,6 @@ import { generateJwtToken } from "../../helpers/handleJwt";
 import { hashPassword } from "../../helpers/handlePasswords";
 import { response } from "../../helpers/response";
 import { prisma } from "../../lib/dbConnect";
-import { generateShortId } from "../../lib/generateShortId";
 import rateLimit from "../../lib/rateLimiter";
 
 const router = express.Router();
@@ -89,26 +88,14 @@ router.post("/", async (req, res) => {
     }
 
     // If email is not in use, create a new user
-    const getUserId = await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         email,
         password: hashedPassword,
       },
       select: {
         id: true,
-      },
-    });
-
-    // generate a short id
-    const shortId = await generateShortId(getUserId.id);
-
-    // update the user with its short id
-    const user = await prisma.user.update({
-      where: {
-        id: getUserId.id,
-      },
-      data: {
-        shortId,
+        email: true,
       },
     });
 
@@ -116,7 +103,6 @@ router.post("/", async (req, res) => {
     const token = generateJwtToken({
       id: user.id,
       email: user.email,
-      shortId,
     });
 
     response(
@@ -126,7 +112,6 @@ router.post("/", async (req, res) => {
         info: {
           id: user.id,
           email: user.email,
-          shortId: user.shortId!,
           token,
         },
       },

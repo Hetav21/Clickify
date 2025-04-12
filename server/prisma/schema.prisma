@@ -9,31 +9,30 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  shortId  String? @unique
-  email    String  @unique
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  email    String @unique
   password String
 
   Link Link[]
 }
 
 model Link {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId     String    @unique @db.ObjectId
-  shortUrl   String    @unique
-  longUrl    String    @unique
-  totalClick Int       @default(0)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  expiresAt  DateTime?
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String    @db.ObjectId
+  shortUrl    String    @unique
+  longUrl     String
+  totalClick  Int       @default(0)
+  createdAt   DateTime  @default(now())
+  expiresAt   DateTime?
+  customAlias String?
 
-  user  User    @relation(fields: [userId], references: [id])
-  Click Click[]
+  user   User    @relation(fields: [userId], references: [id])
+  Clicks Click[]
 }
 
 model Click {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  linkId    String   @unique @db.ObjectId
+  linkId    String   @db.ObjectId
   ip        String
   userAgent String
   timestamp DateTime @default(now())

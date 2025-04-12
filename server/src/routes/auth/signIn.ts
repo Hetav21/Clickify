@@ -75,7 +75,6 @@ router.post("/", async (req, res) => {
         email: true,
         password: true,
         id: true,
-        shortId: true,
       },
     });
 
@@ -112,7 +111,6 @@ router.post("/", async (req, res) => {
     const token = generateJwtToken({
       id: dbUser.id,
       email: dbUser.email,
-      shortId: dbUser.shortId!,
     });
 
     // Returning the response
@@ -124,7 +122,6 @@ router.post("/", async (req, res) => {
         info: {
           id: dbUser.id,
           email: dbUser.email,
-          shortId: dbUser.shortId!,
           token,
         },
       },
