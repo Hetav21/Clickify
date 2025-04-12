@@ -6,6 +6,6 @@ export interface ApiResponse {
     id?: string;
     email?: string;
     token?: string;
-    shortId?: string;
+    shortUrl?: string;
   };
 }

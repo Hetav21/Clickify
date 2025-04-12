@@ -1,0 +1,17 @@
+meta {
+  name: create url
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:3000/api/url
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "longurl": "https://www.qna.social/"
+  }
+}
