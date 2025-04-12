@@ -52,7 +52,6 @@ export function NavBar() {
                       Cookies.remove("token");
                       Cookies.remove("id");
                       Cookies.remove("email");
-                      Cookies.remove("shortId");
                       toast.success("Logged out successfully");
                     }}
                   >

@@ -61,7 +61,6 @@ export function Auth({ type }: { type: "sign-up" | "sign-in" }) {
       Cookies.set("id", data.info!.id!);
       Cookies.set("token", data.info!.token!);
       Cookies.set("email", data.info!.email!);
-      Cookies.set("shortId", data.info!.shortId!);
 
       toast.success("Logged in successfully!");
 
