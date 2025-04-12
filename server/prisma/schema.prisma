@@ -17,14 +17,16 @@ model User {
 }
 
 model Link {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId      String    @db.ObjectId
-  shortUrl    String    @unique
-  longUrl     String
-  totalClick  Int       @default(0)
-  createdAt   DateTime  @default(now())
-  expiresAt   DateTime?
-  customAlias String?
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String    @db.ObjectId
+  shortUrl      String    @unique
+  longUrl       String
+  totalClick    Int       @default(0)
+  mobileClicks  Int       @default(0)
+  desktopClicks Int       @default(0)
+  createdAt     DateTime  @default(now())
+  expiresAt     DateTime?
+  customAlias   String?
 
   user   User    @relation(fields: [userId], references: [id])
   Clicks Click[]
@@ -33,9 +35,16 @@ model Link {
 model Click {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   linkId    String   @db.ObjectId
-  ip        String
-  userAgent String
   timestamp DateTime @default(now())
+
+  ip      String?
+  os      String?
+  browser String?
+  device  String?
+
+  locale   String?
+  country  String?
+  referrer String?
 
   link Link @relation(fields: [linkId], references: [id])
 }

@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+export const customAliasSchema = z
+  .string()
+  .min(3, "Alias must be at least 3 characters long")
+  .max(10, "Alias must be at most 10 characters long");
+
 export const createLinkSchema = z.object({
   longUrl: z
     .string()
@@ -9,9 +14,5 @@ export const createLinkSchema = z.object({
     .date()
     .min(new Date(), "Link must expire in the future")
     .optional(),
-  customAlias: z
-    .string()
-    .min(3, "Alias must be at least 3 characters long")
-    .max(10, "Alias must be at most 10 characters long")
-    .optional(),
+  customAlias: customAliasSchema.optional(),
 });

@@ -7,5 +7,6 @@ export interface ApiResponse {
     email?: string;
     token?: string;
     shortUrl?: string;
+    longUrl?: string;
   };
 }
