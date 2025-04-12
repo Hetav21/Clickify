@@ -2,5 +2,10 @@
 export interface ApiResponse {
   success: boolean;
   message: string;
-  data?: {};
+  info?: {
+    id?: string;
+    email?: string;
+    token?: string;
+    shortId?: string;
+  };
 }

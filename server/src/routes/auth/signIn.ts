@@ -121,10 +121,10 @@ router.post("/", async (req, res) => {
       {
         success: true,
         message: "User signed in successfully",
-        data: {
+        info: {
           id: dbUser.id,
           email: dbUser.email,
-          shortId: dbUser.shortId,
+          shortId: dbUser.shortId!,
           token,
         },
       },

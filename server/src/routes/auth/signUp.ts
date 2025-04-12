@@ -123,10 +123,10 @@ router.post("/", async (req, res) => {
       {
         success: true,
         message: "User signed up successfully",
-        data: {
+        info: {
           id: user.id,
           email: user.email,
-          shortId: user.shortId,
+          shortId: user.shortId!,
           token,
         },
       },
