@@ -8,5 +8,11 @@ export interface ApiResponse {
     token?: string;
     shortUrl?: string;
     longUrl?: string;
+    chartData?: {
+      date: string;
+      mobile: number;
+      desktop: number;
+      other: number;
+    }[];
   };
 }

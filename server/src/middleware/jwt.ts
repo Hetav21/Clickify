@@ -20,6 +20,10 @@ export const jwtMiddleware = (
   try {
     const payload = verifyJwtToken(token);
 
+    if (!req.body) {
+      req.body = {};
+    }
+
     // Attach the payload to the request body for later use
     req.body.jwtPayload = payload;
     next();

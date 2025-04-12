@@ -2,7 +2,7 @@
 
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
@@ -20,6 +20,9 @@ export function NavBar() {
 
   // State to manage navbar background on scroll
   const [_scrolled, setScrolled] = useState(false);
+
+  // To navigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,7 +55,9 @@ export function NavBar() {
                       Cookies.remove("token");
                       Cookies.remove("id");
                       Cookies.remove("email");
+
                       toast.success("Logged out successfully");
+                      navigate("/sign-in");
                     }}
                   >
                     <Label>Logout</Label>
