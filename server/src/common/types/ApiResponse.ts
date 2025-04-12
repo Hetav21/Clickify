@@ -8,11 +8,23 @@ export interface ApiResponse {
     token?: string;
     shortUrl?: string;
     longUrl?: string;
-    chartData?: {
-      date: string;
-      mobile: number;
-      desktop: number;
-      other: number;
-    }[];
+    chartData?: chartDataType[];
+    tableData?: tableDataType[];
   };
 }
+
+export type chartDataType = {
+  date: string;
+  mobile: number;
+  desktop: number;
+  other: number;
+};
+
+export type tableDataType = {
+  id: string;
+  longUrl: string;
+  shortUrl: string;
+  totalClicks: number;
+  createdAt: string;
+  isExpired: boolean;
+};

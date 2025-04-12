@@ -1,11 +1,53 @@
+import { ApiResponse, tableDataType } from "@/common/types/ApiResponse";
 import { ChartAreaInteractive } from "@/components/chart-area-interactive";
-import { DataTable } from "@/components/data-table";
+import { columns } from "@/components/Columns";
+import { DataTable } from "@/components/DataTable";
 import { SectionCards } from "@/components/section-cards";
 import MobileAndDesktopPieChart from "@/components/views-and-piechart";
 import { ChartProvider } from "@/context/ChartContext";
-import data from "./data.local.json";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export function Dashboard() {
+  const [tableData, setTableData] = useState<tableDataType[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get<ApiResponse>(
+          `${import.meta.env.VITE_BACKEND_URL}/api/analytics/table-data`,
+          {
+            headers: {
+              Authorization: Cookies.get("token"),
+            },
+          },
+        );
+
+        const data = res.data;
+
+        if (data.success) {
+          setTableData(data.info!.tableData! || []);
+        } else {
+          console.error("Failed to fetch table data:", data.message);
+        }
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          toast.warning("An error occurred", {
+            description: e.response?.data?.message || e.message,
+          });
+        } else if (e instanceof Error) {
+          toast.warning("An error occurred", { description: e.message });
+        } else {
+          toast.warning("An unknown error occurred");
+        }
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <ChartProvider>
       <div className="pt-6">
@@ -24,8 +66,11 @@ export function Dashboard() {
                   </div>
                 </div>
               </div>
-
-              <DataTable data={data} />
+              <div className="flex w-full">
+                <div className=" w-full px-4 md:px-6">
+                  <DataTable data={tableData} columns={columns} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
