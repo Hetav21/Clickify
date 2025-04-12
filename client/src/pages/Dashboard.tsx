@@ -2,8 +2,8 @@ import { ChartAreaInteractive } from "@/components/chart-area-interactive";
 import { DataTable } from "@/components/data-table";
 import { SectionCards } from "@/components/section-cards";
 import MobileAndDesktopPieChart from "@/components/views-and-piechart";
-import data from "./data.json";
 import { ChartProvider } from "@/context/ChartContext";
+import data from "./data.local.json";
 
 export function Dashboard() {
   return (
