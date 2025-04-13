@@ -1,4 +1,4 @@
-import { nanoid } from "nanoid";
+import { nanoid } from "nanoid-cjs";
 import { SIZEOF_NANO_ID } from "../config/app";
 import { prisma } from "./dbConnect";
 
