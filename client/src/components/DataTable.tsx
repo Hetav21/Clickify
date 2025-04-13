@@ -63,7 +63,7 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center py-4">
         {mode !== "links" && (
           <Input
-            placeholder="Search URL"
+            placeholder="Search Redirect URLs"
             value={
               (table.getColumn("longUrl")?.getFilterValue() as string) ?? ""
             }
