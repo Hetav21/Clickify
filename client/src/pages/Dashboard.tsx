@@ -5,6 +5,7 @@ import { DataTable } from "@/components/DataTable";
 import { SectionCards } from "@/components/section-cards";
 import MobileAndDesktopPieChart from "@/components/views-and-piechart";
 import { ChartProvider } from "@/context/ChartContext";
+import { useUpdateContext } from "@/hooks/useUpdateContext";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
@@ -12,6 +13,7 @@ import { toast } from "sonner";
 
 export function Dashboard() {
   const [tableData, setTableData] = useState<tableDataType[]>([]);
+  const { shouldUpdate } = useUpdateContext();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +32,7 @@ export function Dashboard() {
         if (data.success) {
           setTableData(data.info!.tableData! || []);
         } else {
-          console.error("Failed to fetch table data:", data.message);
+          console.log("Failed to fetch table data:", data.message);
         }
       } catch (e) {
         if (axios.isAxiosError(e)) {
@@ -46,15 +48,15 @@ export function Dashboard() {
     };
 
     fetchData();
-  }, []);
+  }, [shouldUpdate]);
 
   return (
     <ChartProvider>
-      <div className="pt-6">
+      <div>
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-              <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+            <div className="flex flex-col gap-4 py-8 md:gap-6 md:py-12">
+              <div className="flex flex-col gap-4 md:gap-6">
                 <div className="flex flex-col lg:flex-row gap-4 px-4 lg:px-6">
                   <div className="flex flex-col gap-4 w-full lg:w-3/4">
                     <SectionCards />

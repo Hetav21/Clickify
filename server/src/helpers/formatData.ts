@@ -23,7 +23,9 @@ export async function getTableData(id: string): Promise<tableDataType[]> {
     longUrl: link.longUrl,
     shortUrl: link.shortUrl,
     totalClicks: link.totalClick,
-    createdAt: link.createdAt.toISOString().split("T")[0],
+    // createdAt: link.createdAt.toISOString().split("T")[0],
+    createdAt: link.createdAt,
+    expiresAt: link.expiresAt || null,
     isExpired: link.expiresAt && link.expiresAt < new Date() ? true : false,
   }));
 

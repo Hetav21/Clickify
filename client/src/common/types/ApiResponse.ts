@@ -25,6 +25,7 @@ export type tableDataType = {
   longUrl: string;
   shortUrl: string;
   totalClicks: number;
-  createdAt: string;
+  createdAt: Date;
+  expiresAt: Date | null;
   isExpired: boolean;
 };

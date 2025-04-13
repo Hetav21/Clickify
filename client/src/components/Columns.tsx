@@ -1,17 +1,10 @@
 import { tableDataType } from "@/common/types/ApiResponse";
 import { DataTableColumnHeader } from "@/components/DataTableColumnHeader";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
-import { CheckCircle2Icon, LoaderIcon, MoreHorizontal } from "lucide-react";
+import { CheckCircle2Icon, Infinity as Inf, LoaderIcon } from "lucide-react";
 import { toast } from "sonner";
+import { HandleTableActions } from "./HandleTableActions";
 
 function onActionClick(link: tableDataType) {
   navigator.clipboard.writeText(
@@ -27,7 +20,14 @@ export const columns: ColumnDef<tableDataType>[] = [
       <DataTableColumnHeader column={column} title="Short Url" />
     ),
     cell: ({ row }) => {
-      return <div className="font-medium">{row.original.shortUrl}</div>;
+      return (
+        <div
+          onClick={() => onActionClick(row.original)}
+          className="font-medium"
+        >
+          {row.original.shortUrl}
+        </div>
+      );
     },
   },
   {
@@ -73,7 +73,7 @@ export const columns: ColumnDef<tableDataType>[] = [
       const rawDate = new Date(row.getValue("createdAt"));
 
       const day = rawDate.getDate();
-      const month = rawDate.toLocaleString("en-US", { month: "short" }); // "Apr"
+      const month = rawDate.toLocaleString("en-US", { month: "short" });
       const year = rawDate.getFullYear();
 
       const getOrdinal = (n: number) => {
@@ -118,31 +118,50 @@ export const columns: ColumnDef<tableDataType>[] = [
     ),
   },
   {
+    accessorKey: "expiresAt",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Date of Expiration" />
+    ),
+    cell: ({ row }) => {
+      if (!row.getValue("expiresAt"))
+        return (
+          <div className="font-medium">
+            <Inf></Inf>
+          </div>
+        );
+
+      const rawDate = new Date(row.getValue("expiresAt"));
+
+      const day = rawDate.getDate();
+      const month = rawDate.toLocaleString("en-US", { month: "short" });
+      const year = rawDate.getFullYear();
+
+      const getOrdinal = (n: number) => {
+        if (n > 3 && n < 21) return `${n}th`;
+        switch (n % 10) {
+          case 1:
+            return `${n}st`;
+          case 2:
+            return `${n}nd`;
+          case 3:
+            return `${n}rd`;
+          default:
+            return `${n}th`;
+        }
+      };
+
+      return (
+        <div className="font-medium">
+          {getOrdinal(day)} {month}, {year}
+        </div>
+      );
+    },
+  },
+  {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const link = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => onActionClick(link)}>
-              Copy URL
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit Link</DropdownMenuItem>
-            <DropdownMenuItem variant="destructive">
-              Delete Link
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+      return <HandleTableActions row={row}></HandleTableActions>;
     },
   },
 ];

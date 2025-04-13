@@ -1,5 +1,4 @@
-"use client";
-
+import { LinkEditorButton } from "@/pages/LinkHandler";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -47,7 +46,8 @@ export function NavBar() {
             {
               // Session based rendering of Login or Logout
               isLoggedIn ? (
-                <>
+                <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                  <LinkEditorButton></LinkEditorButton>
                   <Button
                     className="w-full md:w-auto"
                     onClick={(e: React.SyntheticEvent) => {
@@ -62,7 +62,7 @@ export function NavBar() {
                   >
                     <Label>Logout</Label>
                   </Button>
-                </>
+                </div>
               ) : (
                 <div className="gap-3 w-full md:w-fit flex flex-col md:flex-row justify-between items-center">
                   <a href="/sign-up">
