@@ -10,8 +10,16 @@ export interface ApiResponse {
     longUrl?: string;
     chartData?: chartDataType[];
     tableData?: tableDataType[];
+    analytics?: analyticsType;
   };
 }
+
+export type analyticsType = {
+  totalClicks?: number;
+  totalMobileClicks?: number;
+  totalDesktopClicks?: number;
+  activeLinksCount?: number;
+};
 
 export type chartDataType = {
   date: string;

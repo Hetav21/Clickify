@@ -349,11 +349,14 @@ router.post("/delete", async (req, res) => {
       return;
     }
 
-    const url = await prisma.link.delete({
-      where: {
-        id: id,
-      },
-    });
+    await prisma.$transaction([
+      prisma.click.deleteMany({
+        where: { linkId: id },
+      }),
+      prisma.link.delete({
+        where: { id },
+      }),
+    ]);
 
     // Returning the response
     // on success

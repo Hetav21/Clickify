@@ -126,7 +126,7 @@ export const columns: ColumnDef<tableDataType>[] = [
       if (!row.getValue("expiresAt"))
         return (
           <div className="font-medium">
-            <Inf></Inf>
+            <Inf />
           </div>
         );
 
@@ -155,6 +155,17 @@ export const columns: ColumnDef<tableDataType>[] = [
           {getOrdinal(day)} {month}, {year}
         </div>
       );
+    },
+    sortingFn: (a, b, columnId) => {
+      const dateA = a.getValue(columnId) as string | null;
+      const dateB = b.getValue(columnId) as string | null;
+
+      // Treat nulls as infinitely far future (or past, depending on desired behavior)
+      if (!dateA && !dateB) return 0;
+      if (!dateA) return 1; // put nulls at the bottom when sorting ascending
+      if (!dateB) return -1;
+
+      return new Date(dateA).getTime() - new Date(dateB).getTime();
     },
   },
   {
