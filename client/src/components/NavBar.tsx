@@ -80,11 +80,3 @@ export function NavBar() {
     </>
   );
 }
-
-function ButtonNew({ text }: { text: string }) {
-  return (
-    <Button className="text-black bg-inherit hover:bg-black hover:text-white">
-      <Label className="font-semibold text-lg">{text}</Label>
-    </Button>
-  );
-}
