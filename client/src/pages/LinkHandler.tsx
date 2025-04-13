@@ -21,6 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
@@ -30,14 +31,15 @@ import { useUpdateContext } from "@/hooks/useUpdateContext";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconCirclePlusFilled, IconCircleXFilled } from "@tabler/icons-react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { format } from "date-fns";
 import Cookies from "js-cookie";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useDebounceCallback } from "usehooks-ts";
 import { z } from "zod";
 
 export function LinkEditorButton({
@@ -47,6 +49,21 @@ export function LinkEditorButton({
   mode?: "create" | "edit";
   link?: tableDataType;
 }) {
+  // alias state to store alias
+  const [alias, setAlias] = useState("");
+
+  // aliasMessage state to store the ApiResponse for the alias based on availability
+  const [aliasMessage, setAliasMessage] = useState<ApiResponse>({
+    success: false,
+    message: "",
+  });
+
+  // States to block events from happening while checking alias and submitting form
+  const [isCheckingAlias, setIsCheckingAlias] = useState(false);
+
+  // To debounce the backend calls to check username availability
+  const debounced = useDebounceCallback(setAlias, 500);
+
   const [openLinkEditor, setOpenLinkEditor] = useState<boolean>(false);
   const { shouldUpdate, setShouldUpdate } = useUpdateContext();
   const [url, setUrl] = useState<string>("");
@@ -65,6 +82,41 @@ export function LinkEditorButton({
   useEffect(() => {
     form.reset();
   }, [openLinkEditor, form]);
+
+  // Checking alias availability with debounced calls
+  useEffect(() => {
+    const checkUniqueAlias = async () => {
+      if (alias) {
+        setIsCheckingAlias(true);
+        try {
+          const res = await axios.post<ApiResponse>(
+            `${import.meta.env.VITE_BACKEND_URL}/api/check-custom-alias`,
+            {
+              id: mode === "edit" ? link?.id : undefined,
+              customAlias: alias,
+            },
+          );
+          const data = res.data;
+
+          setAliasMessage(data);
+        } catch (err) {
+          const axiosError = err as AxiosError<ApiResponse>;
+          toast.warning(
+            axiosError.response?.data?.message || "Error checking alias",
+          );
+          setAliasMessage(
+            axiosError.response?.data || {
+              success: false,
+              message: "Error checking alias",
+            },
+          );
+        } finally {
+          setIsCheckingAlias(false);
+        }
+      }
+    };
+    checkUniqueAlias();
+  }, [alias, mode, link?.id]);
 
   async function onSubmit(values: z.infer<typeof createLinkSchema>) {
     try {
@@ -203,8 +255,25 @@ export function LinkEditorButton({
                   <FormItem>
                     <FormLabel>Custom Alias</FormLabel>
                     <FormControl>
-                      <Input placeholder="rick-roll" {...field} />
+                      <Input
+                        placeholder="rick-roll"
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          // Debouncing the alias updates
+                          debounced(e.target.value);
+                        }}
+                      />
                     </FormControl>
+                    {isCheckingAlias ? (
+                      <Loader2 className="animate-spin"></Loader2>
+                    ) : (
+                      <Label
+                        className={`font-medium text-sm ${aliasMessage.success === true ? "text-green-600" : "text-red-600"}`}
+                      >
+                        {aliasMessage.message}
+                      </Label>
+                    )}
                     <FormDescription>
                       This is the custom alias that will be used for the short
                       link.

@@ -1,7 +1,7 @@
 import express from "express";
 import { createLinkSchema } from "../../common/schema/createLinkSchema";
 import { JwtPayload } from "../../common/types/JwtPayload";
-import { SIGN_IN as limit } from "../../config/rateLimits";
+import { URL as limit } from "../../config/rateLimits";
 import { response } from "../../helpers/response";
 import rateLimit from "../../lib/rateLimiter";
 import { generateShortUrl } from "../../lib/generateShortUrl";

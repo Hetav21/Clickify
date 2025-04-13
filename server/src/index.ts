@@ -6,6 +6,7 @@ import { redirectRouter } from "./routes/app/redirect";
 import { urlRouter } from "./routes/app/url";
 import { signInRouter } from "./routes/auth/signIn";
 import { signUpRouter } from "./routes/auth/signUp";
+import { checkCustomAliasRouter } from "./routes/app/checkCustomAlias";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.get("/health-check", (req, res) => {
 
 app.use(express.json());
 
+app.use("/api/check-custom-alias", checkCustomAliasRouter);
 app.use("/api/sign-up", signUpRouter);
 app.use("/api/sign-in", signInRouter);
 app.use("/api/redirect", redirectRouter);
