@@ -7,8 +7,16 @@ import { urlRouter } from "./routes/app/url";
 import { signInRouter } from "./routes/auth/signIn";
 import { signUpRouter } from "./routes/auth/signUp";
 import { checkCustomAliasRouter } from "./routes/app/checkCustomAlias";
+import cors from "cors";
 
 const app = express();
+
+app.use(
+  cors({
+    origin: process.env.ORIGIN_URL,
+    optionsSuccessStatus: 200,
+  }),
+);
 
 app.get("/health-check", (req, res) => {
   res.send("Server is healthy!");
