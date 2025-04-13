@@ -11,8 +11,21 @@ export interface ApiResponse {
     chartData?: chartDataType[];
     tableData?: tableDataType[];
     analytics?: analyticsType;
+    links?: linksDataType[];
   };
 }
+
+export type linksDataType = {
+  id: string;
+  os?: string | null;
+  device?: string | null;
+  browser?: string | null;
+  timestamp?: Date | null;
+  ip?: string | null;
+  locale?: string | null;
+  country?: string | null;
+  referrer?: string | null;
+};
 
 export type analyticsType = {
   totalClicks?: number;

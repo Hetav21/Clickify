@@ -26,11 +26,13 @@ import { DataTableViewOptions } from "./DataTableViewOptions";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  mode: "main" | "links";
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  mode = "main",
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -59,14 +61,18 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <div className="flex items-center py-4">
-        <Input
-          placeholder="Search URL"
-          value={(table.getColumn("longUrl")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("longUrl")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+        {mode !== "links" && (
+          <Input
+            placeholder="Search URL"
+            value={
+              (table.getColumn("longUrl")?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              table.getColumn("longUrl")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+        )}
         <DataTableViewOptions table={table} />
       </div>
       <div className="rounded-md border">

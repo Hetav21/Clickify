@@ -86,6 +86,16 @@ export function HandleTableActions({ row }: { row: CoreRow<tableDataType> }) {
         <DropdownMenuItem onClick={() => onActionClick(link)}>
           Copy URL
         </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() =>
+            window.open(
+              `${window.location.origin}/dashboard/${link.id}`,
+              "_blank",
+            )
+          }
+        >
+          Detail View
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <div className="flex flex-col">
           <div className="flex w-full">

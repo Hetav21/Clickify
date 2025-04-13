@@ -28,7 +28,11 @@ function RoutesWithNavbar() {
         <Routes>
           <Route path="/sign-up" element={<Signup />} />
           <Route path="/sign-in" element={<Signin />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard mode="main" />} />
+          <Route
+            path="/dashboard/:id"
+            element={<Dashboard mode="links"></Dashboard>}
+          />
 
           <Route path="/:shortUrl" element={<Redirect />} />
         </Routes>

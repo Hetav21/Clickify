@@ -193,7 +193,7 @@ export function LinkEditorButton({
       <AlertDialogTrigger>
         {mode === "edit" ? (
           <div className="flex w-full">
-            <Button className="w-[115%] font-normal justify-start gap-2 text-black bg-transparent hover:bg-gray-100 px-2 py-1 rounded-sm text-sm">
+            <Button className="w-[115%] font-normal justify-start gap-2 text-black bg-transparent hover:bg-gray-100 px-2 py-1 rounded-sm shadow-none text-sm">
               Update Link
             </Button>
           </div>

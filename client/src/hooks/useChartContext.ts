@@ -14,6 +14,8 @@ export type PieDataItem = {
 };
 
 interface ChartContextType {
+  mode: "links" | "main";
+  id: string | undefined;
   isMobile: boolean;
   timeRange: string;
   chartConfig: ChartConfig;
@@ -30,7 +32,7 @@ export const ChartContext = createContext<ChartContextType | undefined>(
   undefined,
 );
 
-export const useChartContext = (): ChartContextType => {
+export const useChartContext = (mode: "main" | "links"): ChartContextType => {
   const context = useContext(ChartContext);
   if (!context) {
     throw new Error("useChartContext must be used within a ChartProvider");

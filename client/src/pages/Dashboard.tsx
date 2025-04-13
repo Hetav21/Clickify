@@ -1,7 +1,12 @@
-import { ApiResponse, tableDataType } from "@/common/types/ApiResponse";
+import {
+  ApiResponse,
+  linksDataType,
+  tableDataType,
+} from "@/common/types/ApiResponse";
 import { ChartAreaInteractive } from "@/components/chart-area-interactive";
-import { columns } from "@/components/Columns";
+import { mainColumns } from "@/components/Columns";
 import { DataTable } from "@/components/DataTable";
+import { linksColumns } from "@/components/LinksColumns";
 import { SectionCards } from "@/components/section-cards";
 import MobileAndDesktopPieChart from "@/components/views-and-piechart";
 import { ChartProvider } from "@/context/ChartContext";
@@ -9,28 +14,47 @@ import { useUpdateContext } from "@/hooks/useUpdateContext";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
-export function Dashboard() {
-  const [tableData, setTableData] = useState<tableDataType[]>([]);
+export function Dashboard({ mode = "main" }: { mode: "main" | "links" }) {
+  const [data, setData] = useState<tableDataType[] | linksDataType[]>([]);
   const { shouldUpdate } = useUpdateContext();
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get<ApiResponse>(
-          `${import.meta.env.VITE_BACKEND_URL}/api/analytics/table-data`,
-          {
-            headers: {
-              Authorization: Cookies.get("token"),
+        let res;
+
+        if (mode === "links") {
+          res = await axios.get<ApiResponse>(
+            `${import.meta.env.VITE_BACKEND_URL}/api/analytics/links-data/${id}`,
+            {
+              headers: {
+                Authorization: Cookies.get("token"),
+              },
             },
-          },
-        );
+          );
+        } else {
+          res = await axios.get<ApiResponse>(
+            `${import.meta.env.VITE_BACKEND_URL}/api/analytics/table-data`,
+            {
+              headers: {
+                Authorization: Cookies.get("token"),
+              },
+            },
+          );
+        }
 
         const data = res.data;
 
         if (data.success) {
-          setTableData(data.info!.tableData! || []);
+          if (mode === "links") {
+            setData(data.info!.links! || []);
+          } else {
+            setData(data.info!.tableData! || []);
+          }
         } else {
           console.log("Failed to fetch table data:", data.message);
         }
@@ -48,10 +72,10 @@ export function Dashboard() {
     };
 
     fetchData();
-  }, [shouldUpdate]);
+  }, [shouldUpdate, id, mode]);
 
   return (
-    <ChartProvider>
+    <ChartProvider mode={mode}>
       <div>
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
@@ -59,18 +83,23 @@ export function Dashboard() {
               <div className="flex flex-col gap-4 md:gap-6">
                 <div className="flex flex-col lg:flex-row gap-4 px-4 lg:px-6">
                   <div className="flex flex-col gap-4 w-full lg:w-3/4">
-                    <SectionCards />
-                    <ChartAreaInteractive />
+                    <SectionCards mode={mode} />
+                    <ChartAreaInteractive mode={mode} />
                   </div>
 
                   <div className="w-full lg:w-1/4">
-                    <MobileAndDesktopPieChart />
+                    <MobileAndDesktopPieChart mode={mode} />
                   </div>
                 </div>
               </div>
               <div className="flex w-full">
                 <div className=" w-full px-4 md:px-6">
-                  <DataTable data={tableData} columns={columns} />
+                  <DataTable
+                    data={data}
+                    // @ts-expect-error-ignore
+                    columns={mode === "links" ? linksColumns : mainColumns}
+                    mode={mode}
+                  />
                 </div>
               </div>
             </div>

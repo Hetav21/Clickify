@@ -6,6 +6,7 @@ import { ApiResponse } from "@/common/types/ApiResponse";
 import axios from "axios";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
+import { useParams } from "react-router-dom";
 
 type chartData = {
   date: string;
@@ -14,7 +15,15 @@ type chartData = {
   other: number;
 }[];
 
-export const ChartProvider = ({ children }: { children: React.ReactNode }) => {
+export const ChartProvider = ({
+  children,
+  mode,
+}: {
+  children: React.ReactNode;
+  mode: "links" | "main";
+}) => {
+  const { id } = useParams();
+
   const isMobile = useIsMobile();
   const [timeRange, setTimeRange] = useState("90d");
   const [view, setView] = useState<"visitors" | "mobile" | "desktop">(
@@ -31,20 +40,33 @@ export const ChartProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get<ApiResponse>(
-          `${import.meta.env.VITE_BACKEND_URL}/api/analytics/chart-data`,
-          {
-            headers: {
-              Authorization: Cookies.get("token"),
-            },
-          },
-        );
+        let res;
 
+        if (mode === "links") {
+          res = await axios.get<ApiResponse>(
+            `${import.meta.env.VITE_BACKEND_URL}/api/analytics/links-chart-data/${id}`,
+            {
+              headers: {
+                Authorization: Cookies.get("token"),
+              },
+            },
+          );
+        } else {
+          res = await axios.get<ApiResponse>(
+            `${import.meta.env.VITE_BACKEND_URL}/api/analytics/chart-data`,
+            {
+              headers: {
+                Authorization: Cookies.get("token"),
+              },
+            },
+          );
+        }
         const data = res.data;
 
         if (data.success) {
           setChartData(data.info!.chartData! || []);
         } else {
+          toast.warning(data.message);
           console.error("Failed to fetch chart data:", data.message);
         }
       } catch (e) {
@@ -93,6 +115,8 @@ export const ChartProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <ChartContext.Provider
       value={{
+        id,
+        mode,
         isMobile,
         chartConfig,
         timeRange,

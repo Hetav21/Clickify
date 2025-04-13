@@ -13,7 +13,7 @@ function onActionClick(link: tableDataType) {
   toast.success("URL copied to clipboard");
 }
 
-export const columns: ColumnDef<tableDataType>[] = [
+export const mainColumns: ColumnDef<tableDataType>[] = [
   {
     accessorKey: "shortUrl",
     header: ({ column }) => (
