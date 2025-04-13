@@ -37,19 +37,17 @@ export function NavBar() {
       <div className="h-12"></div>
       <nav className="fixed top-0 left-0 z-50 bg-transparent w-full flex justify-center">
         <div className="border-2 border-black backdrop-blur-sm rounded-lg w-full mx-6 mt-3 px-6 py-2">
-          <div className="flex flex-col mx-4 md:flex-row justify-between items-center">
+          <div className="flex flex-col mx-4 sm:flex-row justify-between items-center">
             <a href={isLoggedIn ? "/dashboard" : "/"}>
-              <Label className="text-2xl font-bold mb-4 md:mb-0">
-                Clickify
-              </Label>
+              <Label className="text-2xl font-bold md:mb-0">Clickify</Label>
             </a>
             {
               // Session based rendering of Login or Logout
               isLoggedIn ? (
-                <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div className="flex items-center gap-2 mt-2 sm:mt-0 md:gap-4">
                   <LinkEditorButton></LinkEditorButton>
                   <Button
-                    className="w-full md:w-auto"
+                    className=""
                     onClick={(e: React.SyntheticEvent) => {
                       e.preventDefault();
                       Cookies.remove("token");
@@ -64,13 +62,13 @@ export function NavBar() {
                   </Button>
                 </div>
               ) : (
-                <div className="gap-3 w-full md:w-fit flex flex-col md:flex-row justify-between items-center">
+                <div className="gap-3 w-full md:w-fit md:flex-row justify-between items-center">
                   <a href="/sign-up">
-                    <ButtonNew text="Sign Up" />
+                    <Button> Sign Up</Button>
                   </a>
                   {pathname === "/" && (
                     <a href="/sign-in">
-                      <ButtonNew text="Sign In" />
+                      <Button> Sign In</Button>
                     </a>
                   )}
                 </div>
