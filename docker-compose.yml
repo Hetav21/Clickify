@@ -1,0 +1,37 @@
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: ./Dockerfile
+    container_name: clickify-client
+    ports:
+      - "5173:80"
+    env_file:
+      - ./client/.env
+
+  server:
+    build:
+      context: ./server
+      dockerfile: ./Dockerfile
+    container_name: clickify-server
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    env_file:
+      - ./server/.env
+    depends_on:
+      - mongo
+    command: sh -c "npx prisma generate && npm run dev"
+
+  mongo:
+    image: mongo
+    container_name: clickify-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
