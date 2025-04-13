@@ -84,17 +84,18 @@ export function Dashboard({ mode = "main" }: { mode: "main" | "links" }) {
                 <div className="flex flex-col lg:flex-row gap-4 px-4 lg:px-6">
                   <div className="flex flex-col gap-4 w-full lg:w-3/4">
                     <SectionCards mode={mode} />
-                    <ChartAreaInteractive mode={mode} />
+                    <ChartAreaInteractive />
                   </div>
 
                   <div className="w-full lg:w-1/4">
-                    <MobileAndDesktopPieChart mode={mode} />
+                    <MobileAndDesktopPieChart />
                   </div>
                 </div>
               </div>
               <div className="flex w-full">
                 <div className=" w-full px-4 md:px-6">
                   <DataTable
+                    // @ts-expect-error-ignore
                     data={data}
                     // @ts-expect-error-ignore
                     columns={mode === "links" ? linksColumns : mainColumns}

@@ -24,11 +24,7 @@ import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 export const description = "An interactive area chart";
 
-export function ChartAreaInteractive({
-  mode = "main",
-}: {
-  mode: "main" | "links";
-}) {
+export function ChartAreaInteractive() {
   const { timeRange, setTimeRange, filteredData, chartConfig, view } =
     useChartContext();
 

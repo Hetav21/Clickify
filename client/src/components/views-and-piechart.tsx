@@ -17,12 +17,8 @@ import {
 } from "recharts";
 import { Card, CardDescription, CardHeader } from "./ui/card";
 
-export default function MobileAndDesktopPieChart({
-  mode = "main",
-}: {
-  mode: "main" | "links";
-}) {
-  const { view, setView, pieData, chartConfig } = useChartContext(mode);
+export default function MobileAndDesktopPieChart() {
+  const { view, setView, pieData, chartConfig } = useChartContext();
 
   return (
     <Card className="@container/card h-full">

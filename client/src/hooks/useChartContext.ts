@@ -32,7 +32,7 @@ export const ChartContext = createContext<ChartContextType | undefined>(
   undefined,
 );
 
-export const useChartContext = (mode: "main" | "links"): ChartContextType => {
+export const useChartContext = (): ChartContextType => {
   const context = useContext(ChartContext);
   if (!context) {
     throw new Error("useChartContext must be used within a ChartProvider");
