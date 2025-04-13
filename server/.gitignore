@@ -90,6 +90,7 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
+dist
 
 # Gatsby files
 .cache/
@@ -138,3 +139,4 @@ prisma/migrations
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+.vercel

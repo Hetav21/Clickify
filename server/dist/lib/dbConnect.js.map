@@ -1,1 +1,0 @@
-{"version":3,"file":"dbConnect.js","sourceRoot":"","sources":["../../src/lib/dbConnect.ts"],"names":[],"mappings":";;;AAAA,uEAA8D;AAC9D,sDAAsD;AAEzC,QAAA,MAAM,GAAG,IAAI,wBAAY,CAAC;IACrC,aAAa,EAAE,OAAO,CAAC,GAAG,CAAC,YAAY;CACxC,CAAC,CAAC,QAAQ,CAAC,IAAA,qCAAc,GAAE,CAAC,CAAC"}
