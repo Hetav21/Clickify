@@ -25,6 +25,4 @@ app.use("/", jwtMiddleware);
 app.use("/api/url", urlRouter);
 app.use("/api/analytics", analyticsRouter);
 
-app.listen(port, () => {
-  console.log(`Router listening on port ${port}`);
-});
+export default app;
