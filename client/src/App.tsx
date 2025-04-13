@@ -5,6 +5,7 @@ import Redirect from "./pages/Redirect";
 import { Signin } from "./pages/Signin";
 import { Signup } from "./pages/Signup";
 import { UpdateProvider } from "./context/UpdationContext";
+import { AuthRedirect } from "@/pages/AuthRedirect";
 
 function App() {
   // Defining routes of the application
@@ -26,6 +27,7 @@ function RoutesWithNavbar() {
       <UpdateProvider>
         {showNavbar && <NavBar />}
         <Routes>
+          <Route path="/" element={<AuthRedirect />} />
           <Route path="/sign-up" element={<Signup />} />
           <Route path="/sign-in" element={<Signin />} />
           <Route path="/dashboard" element={<Dashboard mode="main" />} />
