@@ -86,10 +86,10 @@ web_modules/
 # Next.js build output
 .next
 out
+*.local
 
 # Nuxt.js build / generate output
 .nuxt
-dist
 
 # Gatsby files
 .cache/
